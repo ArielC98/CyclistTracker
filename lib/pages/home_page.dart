@@ -18,73 +18,41 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text("Cyclist Tracker"),
       ),
-      body: FutureBuilder(
-          future: getUsers(),
-          builder: ((context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    onDismissed: (direction) async {
-                      await deleteUser(snapshot.data?[index]['uid']);
-                      snapshot.data?.removeAt(index);
-                    },
-                    confirmDismiss: (direction) async {
-                      bool result = false;
-                      result = await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                  "¿Está seguro de querer eliminar a ${snapshot.data?[index]['name']}?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    return Navigator.pop(context, false);
-                                  },
-                                  child: const Text(
-                                    "Cancelar",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    return Navigator.pop(context, true);
-                                  },
-                                  child: const Text("Confirmar"),
-                                )
-                              ],
-                            );
-                          });
-                      return result;
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      child: const Icon(Icons.delete),
-                    ),
-                    direction: DismissDirection.endToStart,
-                    key: Key(snapshot.data?[index]['uid']),
-                    child: ListTile(
-                      title: Text((snapshot.data?[index]['name'])),
-                      onTap: (() async {
-                        await Navigator.pushNamed(context, "/update",
-                            arguments: {
-                              "name": snapshot.data?[index]['name'],
-                              "uid": snapshot.data?[index]['uid'],
-                            });
-                        setState(() {});
-                      }),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          })),
+      body: ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                color: Colors.amber[600],
+                width: 48.0,
+                height: 48.0,
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                color: Color.fromARGB(255, 0, 4, 255),
+                width: 48.0,
+                height: 48.0,
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                color: Color.fromARGB(255, 0, 4, 255),
+                width: 78.0,
+                height: 48.0,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    elevation: 0,
+                  ),
+                  onPressed: () {},
+                  child: const Text("Tap on this"),
+                ),
+              )
+            ],
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.pushNamed(context, '/create');

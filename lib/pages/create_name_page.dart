@@ -1,4 +1,5 @@
 import 'package:cyclist_tracker/services/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateNamePage extends StatefulWidget {
@@ -9,28 +10,51 @@ class CreateNamePage extends StatefulWidget {
 }
 
 class _CreateNamePageState extends State<CreateNamePage> {
-  TextEditingController nameController = TextEditingController(text: "");
+  TextEditingController userController = TextEditingController(text: "");
+  TextEditingController passwordController = TextEditingController(text: "");
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Añadir Nombre')),
+      appBar: AppBar(title: const Text('Añadir Usuario')),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(children: [
           TextField(
-            controller: nameController,
+            controller: userController,
             decoration: const InputDecoration(
-              hintText: 'Ingrese un nuevo nombre',
+              hintText: 'Ingrese el correo electrónico',
+            ),
+          ),
+          TextField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: const InputDecoration(
+              hintText: 'Ingrese la contraseña',
             ),
           ),
           ElevatedButton(
               onPressed: () async {
-                await createUser(nameController.text).then((_) {
-                  Navigator.pop(context);
-                });
+                try {
+                  await auth
+                      .createUserWithEmailAndPassword(
+                          email: userController.text,
+                          password: passwordController.text)
+                      .then((_) {
+                    Navigator.pop(context);
+                  });
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'contraseña debil') {
+                    print('La contraseña es muy debil');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('El correo ingresado ya esta registrado');
+                  }
+                } catch (e) {
+                  print(e);
+                }
               },
-              child: const Text('Guardar'))
+              child: const Text('Crear'))
         ]),
       ),
     );
