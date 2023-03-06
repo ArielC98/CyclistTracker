@@ -5,6 +5,7 @@
 - Leonel Molina 
 - Ariel Calderón
 
+</br> [Video](https://youtu.be/vfJS20Fd7d8)
 Para comenzar, se realiza el inicio de sesión en la aplicación.
 ![WhatsApp Image 2023-03-06 at 16 36 42](https://user-images.githubusercontent.com/74626123/223237717-42c27d11-ac4b-47b3-9775-bcee096519f6.jpeg)
 </br>Se ingresa el correo electrónico y la contraseña.
