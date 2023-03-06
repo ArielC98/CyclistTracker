@@ -16,7 +16,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
     final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
     nameController.text = arguments['name'];
     return Scaffold(
-      appBar: AppBar(title: const Text('Actualizar Nombre')),
+      appBar: AppBar(title: const Text('Actualizar Usuario')),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(children: [

@@ -45,34 +45,33 @@ class _SettingsPageState extends State<SettingsPage> {
         onWillPop: () async => false,
         child: Scaffold(
           appBar: AppBar(
-              title: const Text('Ajustes'),
-              automaticallyImplyLeading: false
-            ),
+              title: const Text('Ajustes'), automaticallyImplyLeading: false),
           body: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await auth.signOut().then((_) {
-                        globals.loggedIn = false;
-                        Navigator.pushNamed(context, '/');
-                      });
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        globals.showAlertDialog(
-                            context, "Error", "La contraseña es muy debil");
-                      } else if (e.code == 'email-already-in-use') {
-                        globals.showAlertDialog(context, "Error",
-                            "El correo ingresado ya esta registrado");
-                      }
-                    } catch (e) {
-                      globals.showAlertDialog(
-                          context, "Error", "Fallo en la conexión");
-                      print(e);
-                    }
-                  },
-                  child: const Text('Cerrar sesión'))
+              Center(
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await auth.signOut().then((_) {
+                            globals.loggedIn = false;
+                            Navigator.pushNamed(context, '/');
+                          });
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            globals.showAlertDialog(
+                                context, "Error", "La contraseña es muy debil");
+                          } else if (e.code == 'email-already-in-use') {
+                            globals.showAlertDialog(context, "Error",
+                                "El correo ingresado ya esta registrado");
+                          }
+                        } catch (e) {
+                          globals.showAlertDialog(
+                              context, "Error", "Fallo en la conexión");
+                          print(e);
+                        }
+                      },
+                      child: const Text('Cerrar sesión')))
             ]),
           ),
           bottomNavigationBar: BottomNavigationBar(
