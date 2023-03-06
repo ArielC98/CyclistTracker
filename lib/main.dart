@@ -9,6 +9,7 @@ import 'pages/home_page.dart';
 import 'package:cyclist_tracker/pages/login_page.dart';
 import 'package:cyclist_tracker/pages/create_user_page.dart';
 import 'package:cyclist_tracker/pages/update_user_page.dart';
+import 'package:cyclist_tracker/pages/settings_page.dart';
 
 //Libreria global
 import 'globals.dart' as globals;
@@ -26,7 +27,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
- 
     return MaterialApp(
       title: 'Cyclist Tracker',
       initialRoute: '/',
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/login': ((context) => const LoginPage()),
         '/create': ((context) => const CreateUserPage()),
         '/update': ((context) => const UpdateUserPage()),
+        '/settings': ((context) => const SettingsPage()),
       },
     );
   }

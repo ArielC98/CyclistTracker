@@ -34,52 +34,59 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Iniciar Sesión')),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(children: [
-          TextField(
-            controller: userController,
-            decoration: const InputDecoration(
-              hintText: 'Ingrese el correo electrónico',
-            ),
-          ),
-          TextField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              hintText: 'Ingrese la contraseña',
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                try {
-                  await auth.signInWithEmailAndPassword(
-                      email: userController.text,
-                      password: passwordController.text)
-                      .then((_) {
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+              title: const Text('Iniciar Sesión'),
+              automaticallyImplyLeading: false),
+          body: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(children: [
+              TextField(
+                controller: userController,
+                decoration: const InputDecoration(
+                  hintText: 'Ingrese el correo electrónico',
+                ),
+              ),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  hintText: 'Ingrese la contraseña',
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await auth
+                          .signInWithEmailAndPassword(
+                              email: userController.text,
+                              password: passwordController.text)
+                          .then((_) {
                         globals.loggedIn = true;
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => const Home()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Home()));
                       });
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'invalid-email') {
-                    globals.showAlertDialog(
-                        context, "Error", "Correo no válido");
-                  } else if (e.code == 'wrong-password') {
-                    globals.showAlertDialog(context, "Error",
-                        "Contraseña incorrecta");
-                  }
-                } catch (e) {
-                  globals.showAlertDialog(
-                      context, "Error", "Fallo en la conexión");
-                  print(e);
-                }
-              },
-              child: const Text('Ingresar'))
-        ]),
-      ),
-    );
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'invalid-email') {
+                        globals.showAlertDialog(
+                            context, "Error", "Correo no válido");
+                      } else if (e.code == 'wrong-password') {
+                        globals.showAlertDialog(
+                            context, "Error", "Contraseña incorrecta");
+                      }
+                    } catch (e) {
+                      globals.showAlertDialog(
+                          context, "Error", "Fallo en la conexión");
+                      print(e);
+                    }
+                  },
+                  child: const Text('Ingresar'))
+            ]),
+          ),
+        ));
   }
 }

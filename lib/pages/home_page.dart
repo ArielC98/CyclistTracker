@@ -1,6 +1,7 @@
 // Servicios
-import 'package:cyclist_tracker/services/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../globals.dart' as globals;
 
 class Home extends StatefulWidget {
   const Home({
@@ -12,54 +13,48 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  int _selectedIndex = 0;
+
+  static const List<String> pages = <String>["/", "/create", "/settings"];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    Navigator.pushNamed(context, pages[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cyclist Tracker"),
-      ),
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10.0),
-                color: Colors.amber[600],
-                width: 48.0,
-                height: 48.0,
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+              title: const Text("Cyclist Tracker"),
+              automaticallyImplyLeading: false),
+          body: const Center(
+            child: Text('lista'),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Inicio',
               ),
-              Container(
-                margin: const EdgeInsets.all(10.0),
-                color: Color.fromARGB(255, 0, 4, 255),
-                width: 48.0,
-                height: 48.0,
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add),
+                label: 'Agregar usuario',
               ),
-              Container(
-                margin: const EdgeInsets.all(10.0),
-                color: Color.fromARGB(255, 0, 4, 255),
-                width: 78.0,
-                height: 48.0,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    elevation: 0,
-                  ),
-                  onPressed: () {},
-                  child: const Text("Tap on this"),
-                ),
-              )
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Ajustes',
+              ),
             ],
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.pushNamed(context, '/create');
-          setState(() {});
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+            currentIndex: _selectedIndex,
+            selectedItemColor: Color.fromARGB(255, 0, 102, 255),
+            onTap: _onItemTapped,
+          ),
+        ));
   }
 }

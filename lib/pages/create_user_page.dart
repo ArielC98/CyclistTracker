@@ -29,10 +29,24 @@ class _CreateUserPageState extends State<CreateUserPage> {
     return Colors.blue;
   }
 
+  int _selectedIndex = 1;
+  static const List<String> pages = <String>["/", "/create", "/settings"];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    Navigator.pushNamed(context, pages[index]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Añadir Usuario')),
+    return WillPopScope(
+        onWillPop: () async => false,
+        child:Scaffold(
+      appBar: AppBar(
+        title: const Text('Añadir Usuario'),
+        automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(children: [
@@ -90,13 +104,34 @@ class _CreateUserPageState extends State<CreateUserPage> {
                         "El correo ingresado ya esta registrado");
                   }
                 } catch (e) {
-                  globals.showAlertDialog(context, "Error", "Fallo en la conexión");
+                  globals.showAlertDialog(
+                      context, "Error", "Fallo en la conexión");
                   print(e);
                 }
               },
               child: const Text('Crear'))
         ]),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Agregar usuario',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Ajustes',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 0, 102, 255),
+        onTap: _onItemTapped,
+      ),
+    )
     );
   }
 }

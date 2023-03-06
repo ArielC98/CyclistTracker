@@ -2,7 +2,8 @@ library my_prj.globals;
 
 import 'package:flutter/material.dart';
 
-bool loggedIn = false;
+bool loggedIn = true;
+String role = "";
 
 //Cuadro de alertas
 showAlertDialog(BuildContext context, String title, String message) {
