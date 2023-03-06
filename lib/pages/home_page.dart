@@ -34,75 +34,136 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
               title: const Text("Cyclist Tracker"),
               automaticallyImplyLeading: false),
-          body: FutureBuilder(
-          future: getUsers(),
-          builder: ((context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    onDismissed: (direction) async {
-                      await deleteUser(snapshot.data?[index]['uid']);
-                      snapshot.data?.removeAt(index);
-                    },
-                    confirmDismiss: (direction) async {
-                      bool result = false;
-                      result = await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                  "¿Está seguro de querer eliminar a ${snapshot.data?[index]['name']}?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    return Navigator.pop(context, false);
-                                  },
-                                  child: const Text(
-                                    "Cancelar",
-                                    style: TextStyle(color: Colors.red),
+          body: 
+          FutureBuilder(
+              future: getUsers(),
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                  child: Container(
+                                decoration: const BoxDecoration(
+                                    color: Color.fromARGB(236, 255, 255, 255)),
+                                width: 100,
+                                child: Text(snapshot.data?[index]['name'],
+                                    textAlign: TextAlign.left),
+                              )),
+                              const SizedBox(
+                                width: 10,
+                                height: 40,
+                              ),
+                              SizedBox(
+                                width: 50,
+                                height: 40,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 33, 243, 131),
+                                    border: Border.all(),
                                   ),
+                                  child: const ElevatedButton(
+                                      onPressed: null,
+                                      child: Icon(Icons.add_location)),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    return Navigator.pop(context, true);
-                                  },
-                                  child: const Text("Confirmar"),
-                                )
-                              ],
-                            );
-                          });
-                      return result;
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      child: const Icon(Icons.delete),
-                    ),
-                    direction: DismissDirection.endToStart,
-                    key: Key(snapshot.data?[index]['uid']),
-                    child: ListTile(
-                      title: Text((snapshot.data?[index]['name'])),
-                      onTap: (() async {
-                        await Navigator.pushNamed(context, "/update",
-                            arguments: {
-                              "name": snapshot.data?[index]['name'],
-                              "uid": snapshot.data?[index]['uid'],
-                            });
-                        setState(() {});
-                      }),
-                    ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                                height: 40,
+                              ),
+                              SizedBox(
+                                width: 50,
+                                height: 40,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 255, 241, 47),
+                                    border: Border.all(),
+                                  ),
+                                  child: ElevatedButton(
+                                      onPressed: (() async {
+                                        await Navigator.pushNamed(
+                                            context, "/update",
+                                            arguments: {
+                                              "name": snapshot.data?[index]
+                                                  ['name'],
+                                              "uid": snapshot.data?[index]
+                                                  ['uid'],
+                                            });
+                                        setState(() {});
+                                      }),
+                                      child: const Icon(Icons.edit)),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                                height: 40,
+                              ),
+                              SizedBox(
+                                width: 50,
+                                height: 40,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 255, 96, 81),
+                                    border: Border.all(),
+                                  ),
+                                  child: ElevatedButton(
+                                      onPressed: (() async {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "¿Está seguro de querer eliminar a ${snapshot.data?[index]['name']}?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      return Navigator.pop(
+                                                          context, false);
+                                                    },
+                                                    child: const Text(
+                                                      "Cancelar",
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      deleteUser(snapshot
+                                                          .data?[index]['uid']);
+                                                      snapshot.data
+                                                          ?.removeAt(index);
+                                                      return Navigator.pop(
+                                                          context, true);
+                                                    },
+                                                    child:
+                                                        const Text("Confirmar"),
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      }),
+                                      child: const Icon(Icons.delete)),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ));
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          })),
-          
-          
+                }
+              })),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -119,7 +180,7 @@ class _HomeState extends State<Home> {
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor:const Color.fromARGB(255, 0, 102, 255),
+            selectedItemColor: const Color.fromARGB(255, 0, 102, 255),
             onTap: _onItemTapped,
           ),
         ));
