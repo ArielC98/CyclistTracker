@@ -74,8 +74,10 @@ class _HomeState extends State<Home> {
                                           255, 33, 243, 131),
                                       border: Border.all(),
                                     ),
-                                    child: const ElevatedButton(
-                                        onPressed: null,
+                                    child:  ElevatedButton(
+                                        onPressed: (() async{
+                                          Navigator.pushNamed(context, "/map");
+                                        }),
                                         child: Icon(Icons.add_location)),
                                   ),
                                 ),

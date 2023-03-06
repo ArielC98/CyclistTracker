@@ -10,6 +10,8 @@ import 'package:cyclist_tracker/pages/login_page.dart';
 import 'package:cyclist_tracker/pages/create_user_page.dart';
 import 'package:cyclist_tracker/pages/update_user_page.dart';
 import 'package:cyclist_tracker/pages/settings_page.dart';
+import 'package:cyclist_tracker/pages/settings_page.dart';
+import 'package:cyclist_tracker/pages/map_page.dart';
 
 //Libreria global
 import 'globals.dart' as globals;
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/create': ((context) => const CreateUserPage()),
         '/update': ((context) => const UpdateUserPage()),
         '/settings': ((context) => const SettingsPage()),
+        '/map': ((context) => const MapPage()),
       },
     );
   }

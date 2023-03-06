@@ -3,7 +3,7 @@ library my_prj.globals;
 import 'package:flutter/material.dart';
 
 bool loggedIn = false;
-String role = "";
+String role = "admin";
 
 //Cuadro de alertas
 showAlertDialog(BuildContext context, String title, String message) {

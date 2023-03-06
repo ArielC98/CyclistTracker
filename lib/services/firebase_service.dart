@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 FirebaseFirestore database = FirebaseFirestore.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
 
 //Funcion que lee los datos y los almacena en una lista
 Future<List> getUsers() async {
@@ -22,7 +24,15 @@ Future<List> getUsers() async {
 
 //Guardar el nombre de un usuario en la base de datos
 Future<void> createUser(String name, bool isAdmin) async {
-  await database.collection("usuarios").add({"name": name,"isAdmin":isAdmin});
+  await database.collection("usuarios").add({
+    "name": name,
+    "isAdmin": isAdmin,
+    "userId": auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        user.uid;
+      }
+    })
+  });
 }
 
 //Actualizar el nombre de un usuario en la base de datos
