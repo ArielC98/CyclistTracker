@@ -6,8 +6,12 @@ import 'firebase_options.dart';
 
 //Paginas
 import 'pages/home_page.dart';
+import 'package:cyclist_tracker/pages/login_page.dart';
 import 'package:cyclist_tracker/pages/create_user_page.dart';
-import 'package:cyclist_tracker/pages/update_name_page.dart';
+import 'package:cyclist_tracker/pages/update_user_page.dart';
+
+//Libreria global
+import 'globals.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +26,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+ 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Cyclist Tracker',
       initialRoute: '/',
       routes: {
-        '/': ((context) => const Home()),
-        '/create': ((context) => const CreateNamePage()),
-        '/update': ((context) => const UpdateNamePage()),
+        '/': ((context) => globals.loggedIn ? const Home() : const LoginPage()),
+        '/login': ((context) => const LoginPage()),
+        '/create': ((context) => const CreateUserPage()),
+        '/update': ((context) => const UpdateUserPage()),
       },
     );
   }

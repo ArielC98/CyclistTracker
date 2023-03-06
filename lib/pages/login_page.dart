@@ -2,15 +2,16 @@ import 'package:cyclist_tracker/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
+import 'home_page.dart';
 
-class CreateUserPage extends StatefulWidget {
-  const CreateUserPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<CreateUserPage> createState() => _CreateUserPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _CreateUserPageState extends State<CreateUserPage> {
+class _LoginPageState extends State<LoginPage> {
   TextEditingController userController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
   TextEditingController nameController = TextEditingController(text: "");
@@ -31,17 +32,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Añadir Usuario')),
+      appBar: AppBar(title: const Text('Iniciar Sesión')),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(children: [
-          TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              hintText: 'Ingrese el nombre del usuario',
-            ),
-          ),
           TextField(
             controller: userController,
             decoration: const InputDecoration(
@@ -55,46 +52,32 @@ class _CreateUserPageState extends State<CreateUserPage> {
               hintText: 'Ingrese la contraseña',
             ),
           ),
-          CheckboxListTile(
-            title: const Text("Usuario administrador"),
-            checkColor: Colors.white,
-            value: isChecked,
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            },
-          ),
           ElevatedButton(
               onPressed: () async {
                 try {
-                  await auth
-                      .createUserWithEmailAndPassword(
-                          email: userController.text,
-                          password: passwordController.text)
+                  await auth.signInWithEmailAndPassword(
+                      email: userController.text,
+                      password: passwordController.text)
                       .then((_) {
-                    createUser(nameController.text, isChecked);
-                    globals.showAlertDialog(
-                        context, "Éxito", "Usuario creado exitosamente");
-                    nameController.text = "";
-                    userController.text = "";
-                    passwordController.text = "";
-                  });
+                        globals.loggedIn = true;
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => const Home()));
+                      });
                 } on FirebaseAuthException catch (e) {
-                  if (e.code == 'weak-password') {
+                  if (e.code == 'invalid-email') {
                     globals.showAlertDialog(
-                        context, "Error", "La contraseña es muy debil");
-                  } else if (e.code == 'email-already-in-use') {
+                        context, "Error", "Correo no válido");
+                  } else if (e.code == 'wrong-password') {
                     globals.showAlertDialog(context, "Error",
-                        "El correo ingresado ya esta registrado");
+                        "Contraseña incorrecta");
                   }
                 } catch (e) {
-                  globals.showAlertDialog(context, "Error", "Fallo en la conexión");
+                  globals.showAlertDialog(
+                      context, "Error", "Fallo en la conexión");
                   print(e);
                 }
               },
-              child: const Text('Crear'))
+              child: const Text('Ingresar'))
         ]),
       ),
     );

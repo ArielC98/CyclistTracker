@@ -1,14 +1,14 @@
 import 'package:cyclist_tracker/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 
-class UpdateNamePage extends StatefulWidget {
-  const UpdateNamePage({super.key});
+class UpdateUserPage extends StatefulWidget {
+  const UpdateUserPage({super.key});
 
   @override
-  State<UpdateNamePage> createState() => _UpdateNamePageState();
+  State<UpdateUserPage> createState() => _UpdateUserPageState();
 }
 
-class _UpdateNamePageState extends State<UpdateNamePage> {
+class _UpdateUserPageState extends State<UpdateUserPage> {
   TextEditingController nameController = TextEditingController(text: "");
 
   @override
