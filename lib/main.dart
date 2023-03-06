@@ -6,7 +6,7 @@ import 'firebase_options.dart';
 
 //Paginas
 import 'pages/home_page.dart';
-import 'package:cyclist_tracker/pages/create_name_page.dart';
+import 'package:cyclist_tracker/pages/create_user_page.dart';
 import 'package:cyclist_tracker/pages/update_name_page.dart';
 
 void main() async {

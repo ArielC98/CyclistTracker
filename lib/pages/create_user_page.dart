@@ -12,6 +12,7 @@ class CreateNamePage extends StatefulWidget {
 class _CreateNamePageState extends State<CreateNamePage> {
   TextEditingController userController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
+  TextEditingController nameController = TextEditingController(text: "");
   FirebaseAuth auth = FirebaseAuth.instance;
   bool isChecked = false;
 
@@ -34,6 +35,12 @@ class _CreateNamePageState extends State<CreateNamePage> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(children: [
+          TextField(
+            controller: nameController,
+            decoration: const InputDecoration(
+              hintText: 'Ingrese el nombre del usuario',
+            ),
+          ),
           TextField(
             controller: userController,
             decoration: const InputDecoration(
@@ -66,8 +73,10 @@ class _CreateNamePageState extends State<CreateNamePage> {
                           email: userController.text,
                           password: passwordController.text)
                       .then((_) {
+                    createUser(nameController.text, isChecked);
                     showAlertDialog(
                         context, "Éxito", "Usuario creado exitosamente");
+                    nameController.text = "";
                     userController.text = "";
                     passwordController.text = "";
                   });
@@ -80,6 +89,7 @@ class _CreateNamePageState extends State<CreateNamePage> {
                         "El correo ingresado ya esta registrado");
                   }
                 } catch (e) {
+                  showAlertDialog(context, "Error", "Fallo en la conexión");
                   print(e);
                 }
               },

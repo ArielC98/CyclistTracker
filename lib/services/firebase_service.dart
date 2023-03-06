@@ -21,8 +21,8 @@ Future<List> getUsers() async {
 }
 
 //Guardar el nombre de un usuario en la base de datos
-Future<void> createUser(String name) async {
-  await database.collection("usuarios").add({"name": name});
+Future<void> createUser(String name, bool isAdmin) async {
+  await database.collection("usuarios").add({"name": name,"isAdmin":isAdmin});
 }
 
 //Actualizar el nombre de un usuario en la base de datos
