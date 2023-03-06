@@ -16,5 +16,6 @@ Para comenzar, se realiza el inicio de sesión en la aplicación.
 </br>Existe la posibilidad de eliminar un usuario.
 ![WhatsApp Image 2023-03-06 at 16 36 43 (1)](https://user-images.githubusercontent.com/74626123/223237826-c2011306-8551-49ac-acab-30f6987bd38e.jpeg)
 </br>Se puede crear un usuario.
+
 ![WhatsApp Image 2023-03-06 at 16 36 43](https://user-images.githubusercontent.com/74626123/223237854-5c22b7d9-6443-4965-a928-f20f39c748ef.jpeg)
 
